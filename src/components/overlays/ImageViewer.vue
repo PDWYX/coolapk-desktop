@@ -1087,8 +1087,12 @@ function handleBackdropClick(e: MouseEvent) {
 }
 
 function copyLink() {
-  if (currentUrl.value) {
-    navigator.clipboard.writeText(currentUrl.value);
+  // navigator.clipboard 是 iOS 14.0+ 才有的 API，iOS 13 上为 undefined。
+  if (!currentUrl.value) return;
+  try {
+    void navigator.clipboard?.writeText(currentUrl.value);
+  } catch (err) {
+    console.warn('复制链接失败:', err);
   }
 }
 

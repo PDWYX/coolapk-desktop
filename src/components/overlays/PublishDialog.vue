@@ -268,6 +268,7 @@ import AppImage from '../common/AppImage.vue';
 import PublishArticleComposer from './PublishArticleComposer.vue';
 import { buildPublishArticleMessage, hasPublishableArticleText, parsePublishArticleMessage, type PublishArticleState } from '../../utils/publishArticle';
 import { renderPublishArticlePreview } from '../../utils/publishArticleMarkdown';
+import { createRandomId } from '../../utils/randomId';
 
 const appStore = useAppStore();
 const settingsStore = useSettingsStore();
@@ -278,7 +279,7 @@ const images = ref<PublishImage[]>([]);
 const videoAttachment = ref<PublishVideo>();
 type PublishMode = 'feed' | 'article';
 const publishMode = ref<PublishMode>('feed');
-function emptyArticle(): PublishArticleState { return { title: '', cover: null, blocks: [{ id: crypto.randomUUID(), type: 'text', text: '' }] }; }
+function emptyArticle(): PublishArticleState { return { title: '', cover: null, blocks: [{ id: createRandomId(), type: 'text', text: '' }] }; }
 const articleState = ref<PublishArticleState>(emptyArticle());
 const articleComposer = ref<InstanceType<typeof PublishArticleComposer> | null>(null);
 const articleBodyLength = computed(() => articleState.value.blocks.reduce((count, block) => count + (block.type === 'text' ? block.text.length : 0), 0));
@@ -416,7 +417,7 @@ async function switchDraft(draft: FullPublishDraft) {
 async function newDraft() {
   try {
     await persistCurrentDraft();
-    await applyDraftState({ mode: 'feed', article: emptyArticle(), text: '', images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' }, crypto.randomUUID());
+    await applyDraftState({ mode: 'feed', article: emptyArticle(), text: '', images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' }, createRandomId());
     showDrafts.value = false;
   } catch (failure) { errorMessage.value = `保存草稿失败：${failure instanceof Error ? failure.message : String(failure)}`; }
 }
@@ -424,7 +425,7 @@ async function removeDraft(id: string) {
   try {
     clearTimeout(draftTimer);
     await deleteFullPublishDraft(draftAccount, id);
-    if (id === draftId.value) await applyDraftState({ mode: 'feed', article: emptyArticle(), text: '', images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' }, crypto.randomUUID());
+    if (id === draftId.value) await applyDraftState({ mode: 'feed', article: emptyArticle(), text: '', images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' }, createRandomId());
     draftList.value = await listFullPublishDrafts(draftAccount);
   } catch (failure) { errorMessage.value = `删除草稿失败：${failure instanceof Error ? failure.message : String(failure)}`; }
 }
@@ -466,7 +467,7 @@ watch(() => appStore.isPublishOpen, async (open) => {
     restoringDraft = true;
     draftAccount = String(authStore.user?.uid || 'guest');
     sessionIsEdit = isEditMode.value;
-    draftId.value = crypto.randomUUID();
+    draftId.value = createRandomId();
     showDrafts.value = false;
     showVisibility.value = false;
     showMore.value = false;

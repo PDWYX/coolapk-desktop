@@ -580,10 +580,12 @@ function scrollSubtopicIntoView(tagName: string, smooth = true) {
       }
     }
 
-    // 2. 如果没找到，按 .is-active 元素查找
+    // 2. 如果没找到，按 .is-active 元素查找。
+    // 不能用 `:has()`（iOS 15.4+）：CSS 里不支持的伪类只是让规则失效，
+    // 但 DOM API querySelector 碰到无法解析的选择器会抛 SyntaxError。
     if (!targetEl) {
-      targetEl = (container.querySelector('.subtopic-item-wrap:has(.is-active)') as HTMLElement)
-        || (container.querySelector('.is-active') as HTMLElement);
+      const active = container.querySelector('.is-active') as HTMLElement | null;
+      targetEl = (active?.closest('.subtopic-item-wrap') as HTMLElement | null) || active;
     }
 
     // 安全检查：只有真正找到了有效 DOM 元素且不是无效 0 高度时才滚动，绝不无故弹回 0

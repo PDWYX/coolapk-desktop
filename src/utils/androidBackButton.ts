@@ -13,7 +13,8 @@ function ensureNativeListener(): void {
   if (!isAndroidTauri() || listenerPromise) return;
 
   listenerPromise = onBackButtonPress(() => {
-    const topHandler = Array.from(handlers.values()).at(-1);
+    const values = Array.from(handlers.values());
+    const topHandler = values[values.length - 1];
     topHandler?.();
   }).then(() => undefined).catch((error) => {
     listenerPromise = null;

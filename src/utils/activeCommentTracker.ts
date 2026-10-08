@@ -69,7 +69,13 @@ export function isCommentHostVisible(element: HTMLElement | null | undefined): b
  */
 export function collapseActiveComments(): boolean {
   // 连续 Esc 只处理当前可见的评论，不能沿栈关闭屏幕上方的旧帖子。
-  const index = activeCommentStack.findLastIndex(item => item.isVisible());
+  let index = -1;
+  for (let i = activeCommentStack.length - 1; i >= 0; i--) {
+    if (activeCommentStack[i].isVisible()) {
+      index = i;
+      break;
+    }
+  }
   const top = index >= 0 ? activeCommentStack.splice(index, 1)[0] : undefined;
   if (top) {
     try {

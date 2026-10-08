@@ -3,6 +3,7 @@ import { readFilePreview, type PublishImage } from './publishMedia';
 import type { PublishVideo } from './publishVideo';
 import type { PublishTarget, PublishOptions } from '../types/publish';
 import type { PublishArticleState, PublishArticleBlock } from './publishArticle';
+import { createRandomId } from './randomId';
 
 export interface PublishDraftState {
   mode?: 'feed' | 'article';
@@ -47,7 +48,7 @@ export async function listFullPublishDrafts(uid: string): Promise<FullPublishDra
   // 迁移旧版单篇文字草稿；保存成功后才清除旧记录。
   const text = await loadPublishDraft(uid);
   if (!text.trim()) return [];
-  await saveFullPublishDraft(uid, crypto.randomUUID(), { text, images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' });
+  await saveFullPublishDraft(uid, createRandomId(), { text, images: [], target: null, productOptions: {}, visibleStatus: 1, largeCover: false, extraOptions: {}, attachmentTitle: '' });
   await clearPublishDraft(uid);
   const migrated = await readTauriStoreValue<FullDraftMap>('publish_drafts.json', 'fullDrafts');
   return migrated?.[uid] || [];
