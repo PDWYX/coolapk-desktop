@@ -409,6 +409,17 @@ jobs:
           fi
           echo "目标 Info.plist: $plist"
 
+          # tauri-cli 2.11.4 的 bundle.iOS.minimumSystemVersion 默认值是 14.0
+          # （tauri-utils 2.9.3 的 ios_minimum_system_version()），它会经
+          # mobile/ios/mod.rs 覆盖 cargo-mobile2 自带的 13.0 默认值。这里必须是
+          # 13.0 才能让未越狱之外的 iOS 13 设备装上，缺失即视为配置被回退。
+          min_ver="$(node -p 'require("./src-tauri/tauri.conf.json").bundle.iOS.minimumSystemVersion || ""')"
+          if [[ "$min_ver" != "13.0" ]]; then
+            echo "bundle.iOS.minimumSystemVersion 应为 13.0，实际为「$min_ver」" >&2
+            exit 1
+          fi
+          echo "iOS 最低系统版本配置: $min_ver"
+
           pb=/usr/libexec/PlistBuddy
           usage='保存图片到相册需要访问照片权限'
 
@@ -465,7 +476,43 @@ jobs:
           expected_build="$(node -p 'require("./src-tauri/tauri.conf.json").bundle.iOS.bundleVersion')"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app_plist")" = "$expected_base"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$app_plist")" = "$expected_build"
-          echo "IPA 内 Info.plist 权限与本地化校验通过"
+
+          # iOS 13 可用性的最终判据：Info.plist 的 MinimumOSVersion 决定安装门槛，
+          # 主可执行文件的 LC_BUILD_VERSION minos 决定 dyld/系统实际接受的最低版本。
+          # 两者任一是 14.0 都说明最低版本没真正降下来（例如 tauri-cli 默认值回退）。
+          ipa_min="$(/usr/libexec/PlistBuddy -c 'Print :MinimumOSVersion' "$app_plist")"
+          echo "IPA MinimumOSVersion = $ipa_min"
+          test "$ipa_min" = "13.0"
+
+          app_bin="$(find "$work/Payload" -maxdepth 2 -type f -perm -u+x -not -name '*.dylib' -not -name 'Info.plist' -print -quit)"
+          if [[ -z "$app_bin" ]]; then
+            echo "IPA 内未找到主可执行文件" >&2
+            exit 1
+          fi
+          bin_min="$(python3 - "$app_bin" <<'PY'
+          import struct, sys
+
+          data = open(sys.argv[1], "rb").read()
+          LC_BUILD_VERSION = 0x32
+          LC_VERSION_MIN_IPHONEOS = 0x25
+          nf = struct.unpack("<I", data[16:20])[0]
+          off = 32
+          for _ in range(nf):
+              cmd, size = struct.unpack("<II", data[off : off + 8])
+              if cmd == LC_BUILD_VERSION:
+                  minos = struct.unpack("<I", data[off + 12 : off + 16])[0]
+                  print(f"{minos >> 16}.{(minos >> 8) & 0xFF}")
+                  break
+              if cmd == LC_VERSION_MIN_IPHONEOS:
+                  ver = struct.unpack("<I", data[off + 8 : off + 12])[0]
+                  print(f"{ver >> 16}.{ver & 0xFFFF}")
+                  break
+              off += size
+          PY
+          )"
+          echo "主可执行文件 LC_BUILD_VERSION minos = $bin_min"
+          test "$bin_min" = "13.0"
+          echo "IPA 内 Info.plist 权限、本地化与 iOS 13 最低版本校验通过"
           rm -rf "$work"
 
           mkdir -p ios-release

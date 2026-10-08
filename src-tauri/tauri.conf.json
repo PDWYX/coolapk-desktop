@@ -70,7 +70,8 @@
       "versionCode": 132000999
     },
     "iOS": {
-      "bundleVersion": "132.9.99"
+      "bundleVersion": "132.9.99",
+      "minimumSystemVersion": "13.0"
     }
   }
 }
