@@ -241,6 +241,8 @@ onUnmounted(() => {
   padding: 4px 6px 0;
   background: var(--titlebar-background);
   border-bottom: 1px solid var(--border-light);
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

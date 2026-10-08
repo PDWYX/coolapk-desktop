@@ -303,10 +303,20 @@ function shareFeed() {
   background: var(--surface);
   background: linear-gradient(150deg, #ffffff55, transparent 50%, #ffffff10), var(--detail-glass-tint);
   -webkit-backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
   backdrop-filter: blur(22px) saturate(165%);
   box-shadow: 0 8px 28px #00000012, inset 0 1px 1px #ffffff65;
 }
-.official-detail-actions::before { content: ''; position: absolute; inset: 0 0 0 44%; z-index: -1; pointer-events: none; }
+.official-detail-actions::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 44%;
+  z-index: -1;
+  pointer-events: none;
+}
 .official-detail-actions .official-write-comment { height: 100%; margin-right: 10px; min-width: 0; color: var(--text-primary); font: inherit; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 10px; cursor: pointer; }
 .official-detail-actions .official-write-comment svg { width: 22px; height: 22px; flex-shrink: 0; }
 .official-detail-actions > .action-group, .official-detail-actions > .action-btn { min-width: 0; height: 100%; }
@@ -319,7 +329,7 @@ function shareFeed() {
 .official-detail-actions .is-liked { color: #ef4444; }
 .official-detail-actions .is-fav { color: #f59e0b; }
 :global([data-theme="dark"] .official-detail-actions) { --detail-glass-tint: color-mix(in srgb, var(--surface) 72%, transparent); --detail-glass-edge: #ffffff30; }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+@supports not (-webkit-backdrop-filter: blur(1px)) {
   .official-detail-actions::before, .official-detail-actions .official-write-comment { background: var(--surface); }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {

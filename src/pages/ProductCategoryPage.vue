@@ -340,6 +340,8 @@ onMounted(() => {
   cursor: text;
   font: inherit;
   font-size: 14px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 

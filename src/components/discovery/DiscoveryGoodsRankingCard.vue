@@ -50,7 +50,22 @@ header button { flex-shrink:0; padding:8px 14px; border-radius:24px; background:
 small { display:block; margin-top:6px; color:var(--text-secondary); font-size:14px; }
 footer { display:flex; justify-content:space-between; gap:12px; margin-top:16px; color:var(--text-secondary); font-size:14px; }
 .ranking-featured { position:relative; display:block; box-sizing:border-box; width:100%; aspect-ratio:2.3; min-height:150px; padding:20px; overflow:hidden; border-radius:14px; background:#172d64; color:white; text-align:center; }
-.ranking-featured :deep(.app-image-container) { position:absolute; inset:0; width:100%; height:100%; }.ranking-featured-shade { position:absolute; inset:0; background:linear-gradient(transparent,rgba(0,0,0,.6)); }
+.ranking-featured :deep(.app-image-container) {
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+}.ranking-featured-shade {
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background:linear-gradient(transparent,rgba(0,0,0,.6));
+}
 .ranking-featured strong { position:absolute; left:16px; right:16px; bottom:44px; font-size:clamp(18px,3vw,28px); font-weight:600; }
 .ranking-recommend { position:absolute; top:12px; left:12px; border-radius:5px; padding:5px 9px; background:#ffba3c; }
 .ranking-featured-stats { position:absolute; bottom:16px; right:16px; font-size:14px; }

@@ -345,6 +345,8 @@ async function handleTriggerSearch() {
   border-radius: 13px;
   transition: all 0.15s ease;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

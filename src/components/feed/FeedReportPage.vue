@@ -101,11 +101,31 @@ void load();
 .report-content{padding:16px 16px 20px 46px;font-size:17px;line-height:1.6;overflow-wrap:anywhere}.report-content :deep(a){color:var(--brand-primary)}
 .report-reasons{border:0;margin:0;padding:0}.report-reason{display:flex;align-items:center;gap:18px;padding:17px 16px;min-height:56px;cursor:pointer;position:relative;font-size:16px;line-height:1.5}
 .report-reason::after{content:'';position:absolute;bottom:0;left:56px;right:0;border-bottom:1px solid var(--border)}
-.report-reason input[type=radio]{appearance:none;width:21px;height:21px;border:1.5px solid var(--text-tertiary);border-radius:50%;flex-shrink:0;margin:0;display:grid;place-content:center}
+.report-reason input[type=radio]{
+  -webkit-appearance: none;
+  appearance: none;
+  width:21px;
+  height:21px;
+  border:1.5px solid var(--text-tertiary);
+  border-radius:50%;
+  flex-shrink:0;
+  margin:0;
+  display:grid;
+  place-content:center;
+}
 .report-reason input[type=radio]:checked{border-color:var(--brand-primary)}.report-reason input[type=radio]:checked::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--brand-primary)}
 .report-custom-reason{background:none;border:0;outline:0;color:inherit;font:inherit;min-width:0;width:100%}
 .report-pictures{display:flex;flex-wrap:wrap;gap:10px;padding:16px}.report-picture,.report-add-picture{position:relative;width:64px;height:64px}.report-picture img{width:100%;height:100%;object-fit:cover;border-radius:4px}.report-picture button{position:absolute;right:0;top:0;background:#0009;color:white;border:0;font-size:18px}
-.report-add-picture{border:1px solid var(--border);display:grid;place-items:center;font-size:32px;color:var(--text-tertiary)}.report-add-picture input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.report-add-picture{border:1px solid var(--border);display:grid;place-items:center;font-size:32px;color:var(--text-tertiary)}.report-add-picture input{
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity:0;
+  width:100%;
+  cursor:pointer;
+}
 .report-submit-area{padding:12px 16px 24px}.report-submit{width:100%;font-size:17px}.report-error,.report-success{padding:0 16px;font-size:14px}.report-error{color:var(--danger)}.report-success{color:var(--brand-primary)}.report-state{padding:32px 16px}
 @media(min-width:721px){.feed-report-page{border:1px solid var(--border)}.report-header{padding:18px 28px}.report-content{padding-left:62px}.report-submit-area{max-width:420px;margin:auto}}
 </style>

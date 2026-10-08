@@ -279,6 +279,7 @@ watch([uid, relation], () => {
   padding: 12px 16px;
   background: var(--surface, #ffffff);
   border-bottom: 1px solid var(--border-light, rgba(0, 0, 0, 0.06));
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
 }
 

@@ -18,7 +18,10 @@
   html body .feed-action-bar .action-btn::after {
     content: '';
     position: absolute;
-    inset: -8px 0;
+    top: -8px;
+    right: 0;
+    bottom: -8px;
+    left: 0;
   }
 
   /* 动态头部的「更多」按钮（28px，通往编辑/删除/生成长图/点赞列表的唯一入口） */
@@ -29,7 +32,10 @@
   html body .feed-header .app-icon-button::after {
     content: '';
     position: absolute;
-    inset: -8px;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
   }
 
   html body .mobile-top-bar .mobile-icon-button,

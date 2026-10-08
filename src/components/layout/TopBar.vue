@@ -1047,6 +1047,8 @@ function handleUserClick() {
   border-bottom: 1px solid var(--titlebar-divider);
   display: flex;
   align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   z-index: 800;
 }
@@ -1078,6 +1080,8 @@ function handleUserClick() {
   height: 30px;
   flex: 0 0 auto;
   border-radius: 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
 }

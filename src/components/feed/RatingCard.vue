@@ -1055,6 +1055,7 @@ defineExpose({ toggleComments, handleCollapseComments, showComments });
   color: var(--text-primary);
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

@@ -2687,6 +2687,8 @@ onUnmounted(() => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   display: inline-block;
   transition: box-shadow 0.2s ease;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
   -webkit-user-select: text;
   cursor: text;
@@ -2697,12 +2699,16 @@ onUnmounted(() => {
 }
 
 .msg-text {
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
   -webkit-user-select: text;
   cursor: text;
 }
 
 .bubble :deep(*) {
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
   -webkit-user-select: text;
 }
@@ -2764,6 +2770,8 @@ onUnmounted(() => {
   vertical-align: -5px;
   display: inline-block;
   margin: 0 1px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -3017,6 +3025,8 @@ onUnmounted(() => {
   font-size: 0.75rem;
   color: var(--text-tertiary);
   padding: 4px 4px 6px 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   font-weight: 500;
   line-height: 1;
@@ -3161,6 +3171,8 @@ onUnmounted(() => {
   overflow-y: auto;
   word-break: break-word;
   white-space: pre-wrap;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 

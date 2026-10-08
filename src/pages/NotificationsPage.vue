@@ -531,6 +531,7 @@ watch(
   top: 0;
   z-index: 10;
   background-color: var(--surface);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: var(--space-4) var(--space-2) 0;

@@ -636,6 +636,8 @@ async function toggleDyhFollow() {
   border-radius: var(--radius-pill, 14px);
   cursor: pointer;
   transition: all 0.15s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -840,6 +842,7 @@ async function toggleDyhFollow() {
   padding: 4px 9px;
   border-radius: 5px;
   background: rgba(23, 25, 28, 0.92);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: #fff;
   font-size: 11.5px;
@@ -919,6 +922,8 @@ async function toggleDyhFollow() {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   white-space: nowrap;
 }
@@ -957,6 +962,7 @@ async function toggleDyhFollow() {
   border: 0;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: white;
   cursor: pointer;
@@ -1088,7 +1094,15 @@ async function toggleDyhFollow() {
 .discovery-ranking-banners { display:flex; min-width:0; width:100%; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
 .discovery-square-links { display:flex; gap:8px; overflow-x:auto; min-width:0; scrollbar-width:none; }
 .discovery-square-links button { position:relative; overflow:hidden; flex:0 0 94px; height:94px; border:0; padding:0; border-radius:12px; color:white; font:inherit; cursor:pointer; }
-.discovery-square-links button::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,.3); }
+.discovery-square-links button::after {
+  content:'';
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background:rgba(0,0,0,.3);
+}
 .discovery-square-links strong { position:absolute; z-index:1; left:4px; right:4px; top:50%; transform:translateY(-50%); font-size:15px; text-shadow:0 1px 3px #333; }
 .discovery-message { padding:12px 16px; border-radius:14px; background:color-mix(in srgb,var(--brand-primary) 10%,var(--surface)); color:var(--text-secondary); font-size:14px; line-height:1.6; }
 .discovery-message :deep(a) { color:var(--brand-primary); text-decoration:none; }

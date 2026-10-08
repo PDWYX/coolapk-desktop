@@ -111,6 +111,8 @@ function handleClick(event: MouseEvent) {
 .topic-card {
   position: relative;
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   cursor: pointer;
   background-color: var(--surface);

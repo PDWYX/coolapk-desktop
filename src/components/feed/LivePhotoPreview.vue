@@ -271,7 +271,10 @@ onActivated(observePreview);
 <style scoped>
 .live-photo-preview {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   overflow: hidden;
   border-radius: inherit;
   background: var(--background-secondary, #f0f0f0);
@@ -279,7 +282,10 @@ onActivated(observePreview);
 
 .live-photo-preview.is-single {
   position: relative;
-  inset: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
   width: 100%;
   height: 100%;
   display: block;
@@ -287,7 +293,10 @@ onActivated(observePreview);
 
 .live-photo-preview :deep(.app-image-container) {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border-radius: inherit;
@@ -296,7 +305,10 @@ onActivated(observePreview);
 
 .live-photo-preview.is-single :deep(.app-image-container) {
   position: relative;
-  inset: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
   width: 100%;
   height: 100%;
 }
@@ -324,7 +336,10 @@ onActivated(observePreview);
 
 .live-photo-video {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -354,6 +369,7 @@ onActivated(observePreview);
   background: rgba(255, 255, 255, 0.78);
   color: #222222;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   font-size: 13px;
@@ -363,6 +379,8 @@ onActivated(observePreview);
   /* 触摸端要能点这个角标就地播放，桌面端点击继续冒泡到宫格打开查看器。 */
   pointer-events: auto;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -372,7 +390,10 @@ onActivated(observePreview);
   .live-badge::after {
     content: '';
     position: absolute;
-    inset: -12px -4px -4px -12px;
+    top: -12px;
+    right: -4px;
+    bottom: -4px;
+    left: -12px;
   }
 }
 
@@ -394,6 +415,7 @@ onActivated(observePreview);
   border-radius: 50%;
   color: #fff;
   background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   font-size: 10px;
   pointer-events: none;

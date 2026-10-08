@@ -493,6 +493,7 @@ defineExpose({ openImagePicker, insertTextAtCaret, isPreparing });
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+  -webkit-clip-path: inset(50%);
   clip-path: inset(50%);
 }
 

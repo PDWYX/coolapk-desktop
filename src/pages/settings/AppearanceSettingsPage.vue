@@ -509,6 +509,8 @@ function toggleNav(key: string) {
   font-size: var(--font-size-sub);
   color: var(--text-secondary);
   transition: all var(--duration-fast) var(--ease-default);
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -550,6 +552,8 @@ function toggleNav(key: string) {
   font-size: var(--font-size-sub);
   color: var(--text-secondary);
   transition: all var(--duration-fast) var(--ease-default);
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

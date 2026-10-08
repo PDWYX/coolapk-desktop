@@ -1135,7 +1135,10 @@ onUnmounted(() => {
 .image-viewer-backdrop {
   position: fixed;
   /* 桌面端避开应用标题栏，避免预览工具栏覆盖窗口控制按钮。 */
-  inset: var(--topbar-height) 0 0;
+  top: var(--topbar-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.92);
   z-index: 3000;
   display: flex;
@@ -1179,6 +1182,8 @@ onUnmounted(() => {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.18s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -1276,6 +1281,8 @@ onUnmounted(() => {
   justify-content: center;
   overflow: hidden;
   position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   /* 触摸端由脚本接管横滑切图与放大后平移，避免被 WebView 当成滚动/回弹。 */
   touch-action: none;
@@ -1309,7 +1316,10 @@ onUnmounted(() => {
 /* 切图时继续滑出的旧画面；盒子与 .viewer-img 对齐，盖在新图之上。 */
 .viewer-ghost {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: auto;
   height: auto;
   max-width: 90vw;
@@ -1324,7 +1334,10 @@ onUnmounted(() => {
 
 .viewer-live-video {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   width: auto;
   height: auto;
   max-width: 90vw;
@@ -1352,12 +1365,15 @@ onUnmounted(() => {
   color: #ffffff;
   background: rgba(15, 23, 42, 0.55);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1455,6 +1471,7 @@ onUnmounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   transition: all 0.2s ease;
@@ -1545,7 +1562,10 @@ onUnmounted(() => {
 
 @media (max-width: 720px) {
   .image-viewer-backdrop {
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
 
   /* 顶栏落在刘海/灵动岛区域，必须自行让出安全区（与 MobileTopBar 一致）。 */

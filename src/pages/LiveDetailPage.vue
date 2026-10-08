@@ -195,7 +195,21 @@ watch(videoUrl, () => { videoFailed.value = false; });
 .live-player { background: #000; object-fit: contain; }
 .live-player-placeholder { position: relative; background: linear-gradient(135deg, rgba(16, 185, 129, .3), rgba(15, 23, 42, .9)); }
 .live-detail-cover :deep(img) { width: 100%; height: 100%; object-fit: cover; opacity: .76; }
-.live-player-placeholder-mask { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 9px; background: linear-gradient(180deg, rgba(15, 23, 42, .1), rgba(15, 23, 42, .74)); color: #fff; font-size: 13px; }
+.live-player-placeholder-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, .1), rgba(15, 23, 42, .74));
+  color: #fff;
+  font-size: 13px;
+}
 .live-player-placeholder-mask i { font-size: 32px; }
 .live-detail-status { position: absolute; top: 14px; left: 14px; display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: 6px; color: #fff; font-size: 12px; font-weight: 600; }
 .live-detail-status.is-live { background: #0f9d58; }

@@ -1456,6 +1456,7 @@ onBeforeUnmount(() => {
 .filter-search-input::-webkit-search-cancel-button,
 .filter-search-input::-webkit-search-decoration {
   -webkit-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
   display: none;
 }
@@ -1772,6 +1773,7 @@ onBeforeUnmount(() => {
   height: 52px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -1800,6 +1802,7 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-pill);
   font-size: 11px;
   font-weight: 600;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
@@ -1835,6 +1838,7 @@ onBeforeUnmount(() => {
   font-weight: 550;
   color: #ffffff;
   background: rgba(0, 0, 0, 0.48);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1867,6 +1871,7 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
@@ -2302,7 +2307,10 @@ onBeforeUnmount(() => {
 
 .hero-menu-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 99;
   background: transparent;
 }

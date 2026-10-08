@@ -47,6 +47,8 @@ defineProps<{
   font-weight: 700;
   color: var(--text-main, #172033);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

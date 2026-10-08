@@ -1061,6 +1061,8 @@ onUnmounted(() => {
   min-height: 48px;
   overflow-x: auto;
   padding: 0 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

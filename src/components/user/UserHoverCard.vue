@@ -446,7 +446,10 @@ onDeactivated(() => {
   border-radius: 14px;
   box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   animation: popoverIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -486,7 +489,10 @@ onDeactivated(() => {
 
 .cover-mask {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(to bottom, transparent 35%, var(--surface, #ffffff) 100%);
 }
 

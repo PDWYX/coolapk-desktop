@@ -33,7 +33,19 @@ function keepFocus(event: KeyboardEvent) {
 }
 </script>
 <style scoped>
-.publish-sheet-backdrop { position: fixed; inset: 0; z-index: 12000; background: rgb(0 0 0 / 36%); display: flex; justify-content: center; align-items: center; padding: 20px; }
+.publish-sheet-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 12000;
+  background: rgb(0 0 0 / 36%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 .publish-sheet { width: min(520px, 100%); max-height: min(680px, calc(100dvh - 40px)); display: flex; flex-direction: column; border-radius: 16px; background: var(--surface); box-shadow: 0 20px 70px rgb(0 0 0 / 20%); overflow: hidden; color: var(--text-primary); }
 header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--border-light); }
 header h3 { margin: 0; font-size: 16px; font-weight: 600; flex: 1; }

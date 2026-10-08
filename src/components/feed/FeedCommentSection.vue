@@ -1895,7 +1895,15 @@ async function handleSend() {
 /* 挂在 body 上，避免帖子容器的变换/裁切和桌面侧栏遮挡；使用键盘上方的可视视口。 */
 .official-composer-layer { position: fixed; left: 0; right: 0; top: var(--app-viewport-top, 0px); height: var(--app-viewport-height, 100dvh); z-index: 1100; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none; }
 .official-composer-layer .comment-composer-box { position: relative; z-index: 1; flex-shrink: 0; width: 100%; box-sizing: border-box; margin: 0; max-height: min(70%, 600px); overflow-y: auto; border-radius: 18px 18px 0 0; padding: 30px max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: var(--surface); box-shadow: 0 -4px 28px #0002; pointer-events: auto; }
-.official-composer-backdrop { position: absolute; inset: 0; background: #0006; pointer-events: auto; }
+.official-composer-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #0006;
+  pointer-events: auto;
+}
 .official-composer-close { position: absolute; right: 10px; top: 4px; width: 30px; height: 30px; border: 0; background: transparent; color: var(--text-secondary); font-size: 18px; }
 .feed-comment-section {
   margin-top: 14px;
@@ -2197,6 +2205,8 @@ async function handleSend() {
   font-size: 0.75rem;
   color: var(--text-tertiary);
   padding: 4px 4px 6px 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   font-weight: 500;
   line-height: 1;
@@ -2483,12 +2493,16 @@ async function handleSend() {
   line-height: 1.6;
   word-break: break-word;
   cursor: pointer;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 
 .comment-text *,
 .sub-reply-text,
 .sub-reply-text * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 
@@ -2720,6 +2734,8 @@ async function handleSend() {
   overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
   cursor: text;
   box-sizing: border-box;
@@ -2739,6 +2755,8 @@ async function handleSend() {
   vertical-align: -4px !important;
   margin: 0 2px !important;
   display: inline-block !important;
+  -webkit-user-select: all !important;
+  -moz-user-select: all !important;
   user-select: all !important;
   cursor: default;
 }

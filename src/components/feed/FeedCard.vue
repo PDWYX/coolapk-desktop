@@ -1625,7 +1625,10 @@ defineExpose({
 
 .card-cover-mask {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -1759,6 +1762,8 @@ defineExpose({
   border: 1px solid var(--border-light, rgba(0, 0, 0, 0.06));
   cursor: pointer;
   transition: all 0.2s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   box-sizing: border-box;
 }
@@ -1882,6 +1887,7 @@ defineExpose({
   color: var(--text-primary);
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2136,7 +2142,10 @@ defineExpose({
 
 .more-menu-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 20;
 }
 

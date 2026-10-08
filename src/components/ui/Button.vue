@@ -42,6 +42,8 @@ defineEmits<{
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   transition: var(--transition-fast, all 0.15s ease);
   border: 1px solid transparent;

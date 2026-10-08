@@ -313,6 +313,8 @@ onMounted(() => {
   font-size: 13px;
   color: var(--text-primary);
   word-break: break-all;
+  -webkit-user-select: all;
+  -moz-user-select: all;
   user-select: all;
 }
 

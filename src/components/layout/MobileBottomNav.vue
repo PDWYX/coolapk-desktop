@@ -95,6 +95,7 @@ function activate(path: string) {
     background: var(--surface);
     background: linear-gradient(155deg, var(--nav-glass-highlight), transparent 48%, #ffffff12), var(--nav-glass-tint);
     -webkit-backdrop-filter: blur(22px) saturate(165%);
+    -webkit-backdrop-filter: blur(22px) saturate(165%);
     backdrop-filter: blur(22px) saturate(165%);
     isolation: isolate;
     z-index: 30;
@@ -103,7 +104,10 @@ function activate(path: string) {
   .mobile-bottom-nav::before {
     content: '';
     position: absolute;
-    inset: 1px;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
     border-radius: inherit;
     box-shadow: inset 1px 1px 1px #ffffff70, inset -1px -1px 1px #ffffff20;
     pointer-events: none;
@@ -180,7 +184,7 @@ function activate(path: string) {
     outline-offset: 2px;
   }
 
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @supports not (-webkit-backdrop-filter: blur(1px)) {
     .mobile-bottom-nav { background: var(--surface); }
   }
 

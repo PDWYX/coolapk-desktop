@@ -167,6 +167,8 @@ const followCount = computed(() => Math.max(0, Number(props.followCount) || 0));
 
 .count-divider {
   color: var(--border-light, var(--border));
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

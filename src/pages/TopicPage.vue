@@ -951,6 +951,8 @@ onMounted(() => {
   min-height: 48px;
   flex: 0 0 48px;
   overflow-x: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   scrollbar-width: none;
   box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));

@@ -970,6 +970,8 @@ function resetToDefault() {
   justify-content: space-between;
   padding: 10px 14px;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   transition: background-color var(--duration-fast);
 }

@@ -237,6 +237,8 @@ onMounted(() => {
   height: 100%;
   overflow-x: auto;
   flex: 1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   scrollbar-width: none;
 }
@@ -377,6 +379,7 @@ onMounted(() => {
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 4px;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   pointer-events: none;
 }

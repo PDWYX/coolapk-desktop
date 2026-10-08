@@ -254,6 +254,7 @@ function openViewer(index: number) {
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 10px;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);

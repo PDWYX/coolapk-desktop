@@ -74,6 +74,8 @@ function selectTab(key: GoodsTabKey) {
   border-bottom: 1px solid var(--border-light, rgba(0, 0, 0, 0.06));
   background-color: var(--surface);
   overflow-x: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   scrollbar-width: none;
 }

@@ -238,5 +238,14 @@ onMounted(() => {
 .report-reader { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); padding-top: 16px; }
 .report-reader h4 { margin: 0; color: var(--text-primary); }
 .report-file-button { display: inline-flex; align-items: center; position: relative; cursor: pointer; }
-.report-file-button input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
+.report-file-button input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  cursor: pointer;
+}
 </style>

@@ -158,6 +158,8 @@ function handleWheel(e: WheelEvent) {
   height: 100%;
   overflow-x: auto;
   flex: 1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   scrollbar-width: none;
 }

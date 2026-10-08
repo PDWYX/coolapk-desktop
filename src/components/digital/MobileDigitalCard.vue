@@ -100,7 +100,20 @@ function showBanner(index: number) {
 .grid-image :deep(.app-image-container) { width: 48px; height: 48px; background: transparent; }
 .grid-name { width: 100%; font-size: 14px; line-height: 19px; min-height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-align: center; font-weight: 400; }
 .grid-hot, .row-hot { display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
-.rank-ribbon { position: absolute; left: 0; top: 0; min-width: 14px; height: 17px; padding: 0 2px 3px; background: #ccc7c7; color: white; font-size: 11px; line-height: 17px; clip-path: polygon(0 0,100% 0,100% 100%,50% 80%,0 100%); }
+.rank-ribbon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 14px;
+  height: 17px;
+  padding: 0 2px 3px;
+  background: #ccc7c7;
+  color: white;
+  font-size: 11px;
+  line-height: 17px;
+  -webkit-clip-path: polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);
+  clip-path: polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);
+}
 .rank-1 { background: #ff443c; }.rank-2 { background: #ff8700; }.rank-3 { background: #ffbd00; }.rank-4 { background: #c5df2d; }
 .is-navigation { padding: 10px 8px; }
 .category-grid { row-gap: 16px; }

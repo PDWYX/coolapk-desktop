@@ -814,6 +814,8 @@ onUnmounted(unbindGlobalListeners);
   padding: 32px 0 24px;
   font-size: 12px;
   color: var(--text-tertiary, rgba(0, 0, 0, 0.35));
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

@@ -249,6 +249,7 @@ const specs = computed(() => getDigitalProductSpecs(props.product));
 .grid-badge.rating {
   right: 8px;
   background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: #d97706;
   border: 1px solid rgba(0, 0, 0, 0.06);

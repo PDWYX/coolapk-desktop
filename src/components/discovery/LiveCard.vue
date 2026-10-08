@@ -195,7 +195,16 @@ async function handleAction() {
 .live-card-cover :deep(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
 .live-card-item:hover .live-card-cover :deep(img) { transform: scale(1.03); }
 .live-card-cover-fallback { display: grid; place-items: center; color: rgba(255, 255, 255, .9); font-size: 30px; }
-.live-card-media::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, .08), transparent 45%, rgba(0, 0, 0, .42)); content: ''; pointer-events: none; }
+.live-card-media::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .08), transparent 45%, rgba(0, 0, 0, .42));
+  content: '';
+  pointer-events: none;
+}
 .live-card-media-overlay { position: absolute; right: 9px; bottom: 8px; left: 9px; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .live-status-badge, .live-card-time { display: inline-flex; align-items: center; gap: 4px; min-width: 0; padding: 3px 7px; border-radius: 5px; color: #fff; font-size: 11px; line-height: 1.2; white-space: nowrap; }
 .live-status-badge.is-live { background: #0f9d58; }

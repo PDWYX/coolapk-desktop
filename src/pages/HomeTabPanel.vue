@@ -1714,6 +1714,8 @@ defineExpose({ handleHomeSubChannelSelected, activeFollowSubChannelKey });
   gap: 12px;
   padding: 4px 0 6px 0;
   overflow-x: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   scrollbar-width: thin;
   scrollbar-color: var(--border, rgba(0, 0, 0, 0.15)) transparent;

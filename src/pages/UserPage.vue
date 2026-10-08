@@ -1543,6 +1543,7 @@ watch(
   height: 36px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
@@ -1601,6 +1602,7 @@ watch(
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1624,6 +1626,7 @@ watch(
 
 .btn-danger-ghost {
   background: rgba(239, 68, 68, 0.35);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #ffffff;
   border: 1px solid rgba(239, 68, 68, 0.6);
@@ -1636,6 +1639,7 @@ watch(
 .btn-blacklisted,
 .btn-ignored {
   background: rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1668,6 +1672,7 @@ watch(
 
 .btn-following {
   background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1675,6 +1680,7 @@ watch(
 
 .btn-secondary-glass {
   background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1686,6 +1692,7 @@ watch(
   padding: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.25);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -1728,6 +1735,7 @@ watch(
   font-size: 11px;
   color: #60a5fa;
   background: rgba(59, 130, 246, 0.25);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   padding: 2px 8px;
   border-radius: 10px;
@@ -1847,6 +1855,7 @@ watch(
 
 .chip-glass {
   background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: #ffffff;
@@ -1861,6 +1870,7 @@ watch(
 
 .chip-online {
   background: rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: rgba(255, 255, 255, 0.95);
@@ -1885,6 +1895,7 @@ watch(
   align-items: center;
   justify-content: space-between;
   background: rgba(255, 255, 255, 0.15);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -2320,6 +2331,8 @@ watch(
   padding: 32px 0 24px;
   font-size: 12px;
   color: var(--text-tertiary, rgba(0, 0, 0, 0.35));
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 

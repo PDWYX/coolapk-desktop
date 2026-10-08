@@ -187,10 +187,14 @@ watch(
 <style scoped>
 .feed-content-wrapper {
   margin-bottom: 10px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 
 .feed-content-wrapper * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
   user-select: text;
 }
 

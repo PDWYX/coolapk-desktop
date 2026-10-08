@@ -755,6 +755,8 @@ async function run(itemToRun: MenuItem) {
   background: var(--surface-elevated, var(--surface));
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.2), 0 2px 8px rgba(15, 23, 42, 0.12);
   color: var(--text-primary);
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
