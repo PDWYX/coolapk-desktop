@@ -484,33 +484,33 @@ jobs:
           echo "IPA MinimumOSVersion = $ipa_min"
           test "$ipa_min" = "13.0"
 
-          app_bin="$(find "$work/Payload" -maxdepth 2 -type f -perm -u+x -not -name '*.dylib' -not -name 'Info.plist' -print -quit)"
-          if [[ -z "$app_bin" ]]; then
-            echo "IPA 内未找到主可执行文件" >&2
+          # 主可执行文件名以 Info.plist 的 CFBundleExecutable 为准，比按权限位猜更可靠。
+          app_dir="$(dirname "$app_plist")"
+          exec_name="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$app_plist")"
+          app_bin="$app_dir/$exec_name"
+          if [[ ! -f "$app_bin" ]]; then
+            echo "IPA 内未找到主可执行文件 $app_bin" >&2
             exit 1
           fi
-          bin_min="$(python3 - "$app_bin" <<'PY'
-          import struct, sys
+          echo "主可执行文件：$app_bin"
+          file "$app_bin" || true
+          lipo -info "$app_bin" || true
 
-          data = open(sys.argv[1], "rb").read()
-          LC_BUILD_VERSION = 0x32
-          LC_VERSION_MIN_IPHONEOS = 0x25
-          nf = struct.unpack("<I", data[16:20])[0]
-          off = 32
-          for _ in range(nf):
-              cmd, size = struct.unpack("<II", data[off : off + 8])
-              if cmd == LC_BUILD_VERSION:
-                  minos = struct.unpack("<I", data[off + 12 : off + 16])[0]
-                  print(f"{minos >> 16}.{(minos >> 8) & 0xFF}")
-                  break
-              if cmd == LC_VERSION_MIN_IPHONEOS:
-                  ver = struct.unpack("<I", data[off + 8 : off + 12])[0]
-                  print(f"{ver >> 16}.{ver & 0xFFFF}")
-                  break
-              off += size
-          PY
-          )"
-          echo "主可执行文件 LC_BUILD_VERSION minos = $bin_min"
+          # 用 Xcode 自带的 lipo/otool 读，不手写 Mach-O 解析：主可执行文件可能是 fat
+          # 二进制，按固定偏移读 load command 会直接解析错位（曾因此误判校验失败）。
+          thin_dir="$(mktemp -d)"
+          if lipo -thin arm64 "$app_bin" -output "$thin_dir/app" 2>/dev/null; then
+            read_bin="$thin_dir/app"
+          else
+            read_bin="$app_bin"
+          fi
+          otool -l "$read_bin" | grep -A4 'LC_BUILD_VERSION' || true
+          bin_min="$(otool -l "$read_bin" | awk '/LC_BUILD_VERSION/{f=1} f && /^ *minos /{print $2; exit}')"
+          if [[ -z "$bin_min" ]]; then
+            # 老式 SDK 用 LC_VERSION_MIN_IPHONEOS 记录部署目标。
+            bin_min="$(otool -l "$read_bin" | awk '/LC_VERSION_MIN_IPHONEOS/{f=1} f && /^ *version /{print $2; exit}')"
+          fi
+          echo "主可执行文件 minos = $bin_min"
           test "$bin_min" = "13.0"
           echo "IPA 内 Info.plist 权限、本地化与 iOS 13 最低版本校验通过"
           rm -rf "$work"
