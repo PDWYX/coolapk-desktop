@@ -533,6 +533,8 @@ jobs:
           # 安装时 installd 仍会校验 application-identifier，直接报
           #   Application is missing the application-identifer entitlement
           # 这里用 ad-hoc 伪签名把它补上。该步骤只增加签名段，不改动 Mach-O 的 minos。
+          # 刻意不写 platform-application / com.apple.private.security.no-container：
+          # 那是装到系统目录的平台二进制才需要的，装在普通应用目录反而可能起不来。
           ipa="$(find src-tauri/gen/apple/build -type f -name '*.ipa' -print -quit)"
           if [[ -z "$ipa" ]]; then
             echo "未找到 iOS IPA 产物" >&2
@@ -562,8 +564,6 @@ jobs:
               <string>com.coolapk.desktop</string>
             </array>
             <key>get-task-allow</key>
-            <true/>
-            <key>platform-application</key>
             <true/>
           </dict>
           </plist>
