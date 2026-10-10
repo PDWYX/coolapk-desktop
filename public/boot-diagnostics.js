@@ -43,8 +43,8 @@
     el.id = BANNER_ID;
     el.setAttribute(
       'style',
-      'position:fixed;left:0;top:0;right:0;z-index:2147483647;background:#ffd400;color:#000;' +
-        'font:11px/1.35 ui-monospace,Menlo,monospace;padding:3px 6px;white-space:pre-wrap;' +
+      'position:fixed;left:0;top:0;right:0;z-index:2147483647;background:#ffd400;color:#000;border-bottom:2px solid #000;' +
+        'font:12px/1.35 ui-monospace,Menlo,monospace;padding:3px 6px;white-space:pre-wrap;' +
         'pointer-events:none;-webkit-user-select:none;'
     );
     host.appendChild(el);
@@ -64,14 +64,20 @@
       if (!el) return;
       var steps = window.__bootSteps || [];
       tick += 1;
-      el.textContent =
+      var text =
         '[BD t=' + Math.round((Date.now() - startedAt) / 1000) + 's' +
         ' tick=' + tick +
         ' ' + document.readyState +
+        ' vis=' + document.visibilityState +
         ' #app=' + appChildren() +
         ' steps=' + steps.length +
         ' last=' + (steps.length ? steps[steps.length - 1] : 'none') +
-        ' err=' + messages.length + ']';
+        ' err=' + messages.length;
+      if (messages.length) {
+        // 有错误时把首行也塞进黄条：浮层万一画不出来，屏幕上也还有线索。
+        text += ' | ' + messages[messages.length - 1].split('\n').slice(0, 2).join(' ').slice(0, 120);
+      }
+      el.textContent = text + ']';
     } catch (err) {
       /* 诊断代码本身绝不能再抛异常 */
     }
