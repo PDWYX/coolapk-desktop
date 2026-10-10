@@ -137,8 +137,21 @@ async function setupDeepLinkHandling() {
 }
 
 async function bootstrap() {
-  await settingsStore.initializeSettings();
-  logDiagnostic('info', 'app', 'settings-ready');
+  // 启动绝不能被某个永不 settle 的 await 永久卡住：那会表现为一片纯白、且
+  // 连全局错误浮层都不出现的"静默白屏"（iOS 13 上真实发生过）。这里兜底限时，
+  // 超时就带着默认设置继续挂载，至少让界面和诊断浮层能出来。
+  let settingsTimedOut = false;
+  await Promise.race([
+    settingsStore.initializeSettings(),
+    new Promise<void>((resolve) => {
+      window.setTimeout(() => {
+        settingsTimedOut = true;
+        logDiagnostic('error', 'app', 'settings_init_timeout', 'waited_ms=8000');
+        resolve();
+      }, 8000);
+    }),
+  ]);
+  logDiagnostic('info', 'app', 'settings-ready', settingsTimedOut ? 'timed_out=true' : undefined);
   app.mount('#app');
   // 设置文件在应用挂载前读取；缩放等依赖 #app 的外观设置需在挂载后再应用一次。
   settingsStore.applyAppearance();

@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { resolveDeviceIdentity } from '../utils/devicePresets';
+import { logDiagnostic } from '../utils/diagnosticLogger';
 import type {
   AppSettings,
   ThemeMode,
@@ -397,15 +398,51 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   }
 
+  const SETTINGS_SAVE_TIMEOUT_MS = 5000;
+
+  // 写盘是尽力而为的副作用，不能无限期等待：iOS 13 上实测写盘 IPC 可能永不返回，
+  // 一旦直接 await 就把启动链永久停在 app.mount() 之前（表现为无任何报错的纯白屏），
+  // 并且会让 saveQueue 后面的每一次保存都永久排队。所以每步都带超时和步骤名。
+  function withSettingsTimeout<T>(label: string, promise: Promise<T>): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+      const timer = setTimeout(() => {
+        logDiagnostic('error', 'settings', 'save_timeout', `step=${label} ms=${SETTINGS_SAVE_TIMEOUT_MS}`);
+        reject(new Error(`settings 写盘超时：${label}`));
+      }, SETTINGS_SAVE_TIMEOUT_MS);
+      promise.then(
+        (value) => {
+          clearTimeout(timer);
+          resolve(value);
+        },
+        (err) => {
+          clearTimeout(timer);
+          reject(err);
+        },
+      );
+    });
+  }
+
   async function saveSettingsFile(snapshot: AppSettings) {
     if (!fileStore) return;
     const currentKeys = new Set(Object.keys(snapshot));
-    const oldKeys = await fileStore.keys();
+    const oldKeys = await withSettingsTimeout('keys', fileStore.keys());
+    let deleted = 0;
     for (const key of oldKeys) {
-      if (!currentKeys.has(key)) await fileStore.delete(key);
+      if (!currentKeys.has(key)) {
+        await withSettingsTimeout(`delete:${key}`, fileStore.delete(key));
+        deleted += 1;
+      }
     }
-    for (const [key, value] of Object.entries(snapshot)) await fileStore.set(key, value);
-    await fileStore.save();
+    for (const [key, value] of Object.entries(snapshot)) {
+      await withSettingsTimeout(`set:${key}`, fileStore.set(key, value));
+    }
+    await withSettingsTimeout('save', fileStore.save());
+    logDiagnostic(
+      'info',
+      'settings',
+      'save_done',
+      `old_keys=${oldKeys.length} deleted=${deleted} written=${currentKeys.size}`,
+    );
   }
 
   function queueFileSave(snapshot: AppSettings) {
@@ -419,9 +456,11 @@ export const useSettingsStore = defineStore('settings', () => {
   async function initialize() {
     if (!isTauriRuntime) return;
     try {
+      logDiagnostic('info', 'settings', 'load_start');
       const { Store } = await import('@tauri-apps/plugin-store');
       const store = await Store.load(SETTINGS_FILE, { autoSave: false });
       const entries = await store.entries<unknown>();
+      logDiagnostic('info', 'settings', 'entries_ready', `count=${entries.length}`);
       const diskSettings = Object.fromEntries(entries);
       settings.value = normalizeSettings(entries.length ? diskSettings : loadLegacySettings());
       if (!settings.value.zoomManuallySet) settings.value.zoom = getSystemZoom();
@@ -429,14 +468,19 @@ export const useSettingsStore = defineStore('settings', () => {
       persistenceReady = true;
       nativeSyncReady = true;
       syncNativeSettings(settings.value);
-      await queueFileSave(settings.value);
+      // 关键：不 await 写盘。启动只依赖内存里的设置，写盘失败或卡住都不该让
+      // app.mount() 永远不执行（那正是 iOS 13 上纯白屏且零报错的原因）。
+      void queueFileSave(settings.value);
+      logDiagnostic('info', 'settings', 'init_done');
     } catch (err) {
+      logDiagnostic('error', 'settings', 'load_failed', String(err));
       console.error('加载 settings.json 失败，将回退到 localStorage', err);
       settings.value = loadLegacySettings();
       if (!settings.value.zoomManuallySet) settings.value.zoom = getSystemZoom();
       persistenceReady = true;
       nativeSyncReady = true;
       syncNativeSettings(settings.value);
+      logDiagnostic('info', 'settings', 'init_done_legacy');
     }
   }
 
