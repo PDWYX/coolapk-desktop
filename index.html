@@ -11,6 +11,10 @@
         text-size-adjust: 100%;
       }
     </style>
+    <!-- iOS 13 启动诊断（临时排查件，定位完成后连同 public/boot-diagnostics.js 一起删除）。
+         必须是同源外部脚本且早于入口模块加载：CSP 的 script-src 没有 'unsafe-inline'，
+         内联脚本会被拦掉；module 是延迟执行，赶不上入口模块解析失败的情况。 -->
+    <script src="/boot-diagnostics.js"></script>
   </head>
   <body>
     <div id="app"></div>

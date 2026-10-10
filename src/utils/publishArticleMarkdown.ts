@@ -122,9 +122,22 @@ function parseOfficialArticleText(source: string): ArticleTextPart[] {
   parts = applyOfficialRule(parts, /<a[^>]*href=["']([^"']*)["'][^>]*>([\s\S]*?)<\/a>/g, (match) => [
     { type: 'link', text: match[2] ?? '', href: match[1] ?? '' },
   ]);
-  parts = applyOfficialRule(parts, /(?<=^|\n)# ([^#\n]+)(?=\n|$)/g, (match) => [{ type: 'heading', level: 1, text: match[1] }]);
-  parts = applyOfficialRule(parts, /(?<=^|\n)## ([^#\n]+)(?=\n|$)/g, (match) => [{ type: 'heading', level: 2, text: match[1] }]);
-  parts = applyOfficialRule(parts, /(?<=^|\n)### ([^#\n]+)(?=\n|$)/g, (match) => [{ type: 'heading', level: 3, text: match[1] }]);
+  // 标题规则原来用后向断言 /(?<=^|\n)# …/ 。后向断言需要 Safari 16.4+，
+  // iOS 13 的 JavaScriptCore 上构造该正则会直接抛 SyntaxError。
+  // 这里改写成捕获组 (^|\n)，并把捕获到的行首分隔符原样补成一个文本片段，
+  // 语义与原来的零宽断言等价（空片段会被后续规则丢弃，非空的换行按原样保留）。
+  parts = applyOfficialRule(parts, /(^|\n)# ([^#\n]+)(?=\n|$)/g, (match) => [
+    { type: 'text', text: match[1] },
+    { type: 'heading', level: 1, text: match[2] },
+  ]);
+  parts = applyOfficialRule(parts, /(^|\n)## ([^#\n]+)(?=\n|$)/g, (match) => [
+    { type: 'text', text: match[1] },
+    { type: 'heading', level: 2, text: match[2] },
+  ]);
+  parts = applyOfficialRule(parts, /(^|\n)### ([^#\n]+)(?=\n|$)/g, (match) => [
+    { type: 'text', text: match[1] },
+    { type: 'heading', level: 3, text: match[2] },
+  ]);
   parts = applyOfficialRule(parts, /\*\*(.*?)\*\*/g, (match) => [{ type: 'bold', text: match[1] }]);
   parts = applyOfficialRule(parts, /(【[^】\n]+】)/g, (match) => [{ type: 'bold', text: match[1] }]);
   return parts;

@@ -523,7 +523,79 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: ios-arm64-unsigned
-          path: ios-release/*.ipa
+          path: ios-release/*-unsigned.ipa
+          if-no-files-found: error
+
+      - name: 生成带 entitlements 的越狱安装包
+        shell: bash
+        run: |
+          # `--no-sign` 产出的 IPA 没有 entitlements 段。越狱设备用 Filza + AppSync
+          # 安装时 installd 仍会校验 application-identifier，直接报
+          #   Application is missing the application-identifer entitlement
+          # 这里用 ad-hoc 伪签名把它补上。该步骤只增加签名段，不改动 Mach-O 的 minos。
+          ipa="$(find src-tauri/gen/apple/build -type f -name '*.ipa' -print -quit)"
+          if [[ -z "$ipa" ]]; then
+            echo "未找到 iOS IPA 产物" >&2
+            exit 1
+          fi
+
+          work="$(mktemp -d)"
+          ent_dir="$(mktemp -d)"
+          unzip -q "$ipa" -d "$work"
+          app_dir="$(find "$work/Payload" -maxdepth 1 -name '*.app' -print -quit)"
+          if [[ -z "$app_dir" ]]; then
+            echo "IPA 内未找到 Payload/*.app" >&2
+            exit 1
+          fi
+
+          cat > "$ent_dir/entitlements.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>application-identifier</key>
+            <string>com.coolapk.desktop</string>
+            <key>com.apple.developer.team-identifier</key>
+            <string>com.coolapk.desktop</string>
+            <key>keychain-access-groups</key>
+            <array>
+              <string>com.coolapk.desktop</string>
+            </array>
+            <key>get-task-allow</key>
+            <true/>
+            <key>platform-application</key>
+            <true/>
+          </dict>
+          </plist>
+          PLIST
+
+          codesign --force --sign - --timestamp=none \
+            --entitlements "$ent_dir/entitlements.plist" "$app_dir"
+
+          echo "--- 伪签名后的 entitlements ---"
+          codesign -d --entitlements :- "$app_dir" 2>/dev/null || true
+          codesign -d --entitlements :- "$app_dir" 2>/dev/null | grep -q 'application-identifier'
+
+          # 伪签名不该改动最低版本，这里再确认一次主可执行文件的 minos。
+          exec_name="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$app_dir/Info.plist")"
+          bin_min="$(otool -l "$app_dir/$exec_name" | awk '/LC_BUILD_VERSION/{f=1} f && /^ *minos /{print $2; exit}')"
+          echo "伪签名后主可执行文件 minos = $bin_min"
+          test "$bin_min" = "13.0"
+
+          mkdir -p ios-release
+          ref_name="${RELEASE_TAG//\//-}"
+          signed_ipa="$PWD/ios-release/coolapk-${ref_name}-ios-arm64-jailbroken.ipa"
+          rm -f "$signed_ipa"
+          (cd "$work" && zip -qry "$signed_ipa" Payload)
+          unzip -t "$signed_ipa"
+          echo "越狱安装包已生成：$signed_ipa"
+          rm -rf "$work" "$ent_dir"
+
+      - name: 上传 iOS 越狱安装包
+        uses: actions/upload-artifact@v6
+        with:
+          name: ios-arm64-jailbroken
+          path: ios-release/*-jailbroken.ipa
           if-no-files-found: error
 
   # Android 签名 Secrets 探测。
