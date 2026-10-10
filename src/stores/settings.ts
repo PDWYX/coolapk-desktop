@@ -4,6 +4,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { resolveDeviceIdentity } from '../utils/devicePresets';
 import { logDiagnostic } from '../utils/diagnosticLogger';
+import { addMediaQueryListener } from '../utils/mediaQuery';
 import type {
   AppSettings,
   ThemeMode,
@@ -588,7 +589,9 @@ export const useSettingsStore = defineStore('settings', () => {
   const systemThemeMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
     ? window.matchMedia('(prefers-color-scheme: dark)')
     : null;
-  systemThemeMedia?.addEventListener('change', () => {
+  // 注意：必须走 addMediaQueryListener。iOS 13 的 MediaQueryList 没有 addEventListener，
+  // 直接调用会在 store 初始化阶段抛 TypeError 并中断整个 main.ts 顶层（表现为纯白屏）。
+  addMediaQueryListener(systemThemeMedia, () => {
     if (settings.value.theme !== 'system') return;
     applyTheme('system');
     applyAccent(settings.value.accentColor);

@@ -72,12 +72,15 @@
         ' #app=' + appChildren() +
         ' steps=' + steps.length +
         ' last=' + (steps.length ? steps[steps.length - 1] : 'none') +
-        ' err=' + messages.length;
-      if (messages.length) {
-        // 有错误时把首行也塞进黄条：浮层万一画不出来，屏幕上也还有线索。
-        text += ' | ' + messages[messages.length - 1].split('\n').slice(0, 2).join(' ').slice(0, 120);
+        ' err=' + messages.length + ']';
+      var shown = messages.slice(0, 3);
+      for (var i = 0; i < shown.length; i += 1) {
+        text += '\n<<' + shown[i].replace(/\s+/g, ' ').slice(0, 220);
       }
-      el.textContent = text + ']';
+      el.textContent = text;
+      // 浮层万一因为任何原因没建起来（真机上出现过），每秒都补一次，
+      // 免得唯一的错误原文只剩黄条里那 220 字。
+      if (messages.length && !overlay) paint();
     } catch (err) {
       /* 诊断代码本身绝不能再抛异常 */
     }
