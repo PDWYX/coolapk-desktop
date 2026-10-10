@@ -17,6 +17,15 @@
     <script src="/boot-diagnostics.js"></script>
   </head>
   <body>
+    <!-- 静态探针：这一段不依赖任何 JS，只要 HTML 与 CSS 被渲染出来就应该出现。
+         放在 #app 之前而不是里面，因为 Vue 挂载时会清空 #app 的子节点。
+         点不到（pointer-events:none），不会拦住下面的按钮。
+         内容会被 /boot-diagnostics.js 每秒改写成带计数器的形式；
+         如果这里一直停在 "HTML-OK"，说明脚本没执行或主线程已死。 -->
+    <div
+      id="__boot_probe__"
+      style="position:fixed;left:0;top:0;right:0;z-index:2147483647;background:#ffd400;color:#000;font:11px/1.35 ui-monospace,Menlo,monospace;padding:3px 6px;white-space:pre-wrap;pointer-events:none;-webkit-user-select:none;"
+    >[HTML-OK]</div>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -13,14 +13,33 @@ import { normalizeCoolapkDeepLink } from './utils/coolapkRoute';
 import { installDiagnosticLogging, logDiagnostic, logDiagnosticLimited, summarizeDiagnosticError } from './utils/diagnosticLogger';
 import { isResizeObserverWarning } from './utils/windowError';
 
+// iOS 13 启动诊断（临时排查件，定位完成后应删除）：把模块顶层的执行进度记到
+// window.__bootSteps 上，由 public/boot-diagnostics.js 显示在屏幕顶部的黄条里。
+// 真机上出现过"日志写到一半就再无任何输出"的情况，那时日志文件已经不可信，
+// 只有屏幕上的东西能说明模块顶层到底走到了哪一行。
+// 刻意写得最朴素，且永不抛异常，避免诊断代码本身成为新的失败点。
+function bootStep(name: string) {
+  try {
+    const holder = window as unknown as { __bootSteps?: string[] };
+    if (!holder.__bootSteps) holder.__bootSteps = [];
+    holder.__bootSteps.push(name);
+  } catch {
+    // 诊断代码绝不抛异常
+  }
+}
+
+bootStep('module-start');
+
 // 启动全局原生 alert 代理拦截，统一呈现顶部高质感 Toast
 setupGlobalAlertProxy();
 installDiagnosticLogging();
+bootStep('logging');
 
 const app = createApp(App);
 const pinia = createPinia();
 app.use(pinia);
 const settingsStore = useSettingsStore(pinia);
+bootStep('store');
 let unregisterDeepLink: (() => void) | null = null;
 
 // 全局挂载外部链接打开器，供 DOM v-html 中的 <a onclick="..."> 安全调用
@@ -30,6 +49,7 @@ let unregisterDeepLink: (() => void) | null = null;
   void CoolapkTauriAPI.openUrl(url, useSettingsStore().settings.externalLinkMode);
 };
 app.use(router);
+bootStep('router');
 
 // 全局兜底：拦截 v-html 或未来新增页面中遗漏处理的 <a> 点击，
 // 防止主窗口被导航到外部域名（外部页面接管主窗口 = 钓鱼/凭据回跳源被劫持风险）。
@@ -103,6 +123,8 @@ window.addEventListener('unhandledrejection', (e) => {
   showGlobalError(msg);
 });
 
+bootStep('listeners');
+
 async function focusMainWindow() {
   // Android 由深链 Intent 激活 Activity，不调用桌面窗口聚焦接口。
   if (/android/i.test(navigator.userAgent)) return;
@@ -137,6 +159,7 @@ async function setupDeepLinkHandling() {
 }
 
 async function bootstrap() {
+  bootStep('bootstrap-enter');
   // 启动绝不能被某个永不 settle 的 await 永久卡住：那会表现为一片纯白、且
   // 连全局错误浮层都不出现的"静默白屏"（iOS 13 上真实发生过）。这里兜底限时，
   // 超时就带着默认设置继续挂载，至少让界面和诊断浮层能出来。
@@ -151,12 +174,17 @@ async function bootstrap() {
       }, 8000);
     }),
   ]);
+  bootStep(settingsTimedOut ? 'race-timeout' : 'race-ok');
   logDiagnostic('info', 'app', 'settings-ready', settingsTimedOut ? 'timed_out=true' : undefined);
   app.mount('#app');
+  bootStep('mounted');
   // 设置文件在应用挂载前读取；缩放等依赖 #app 的外观设置需在挂载后再应用一次。
   settingsStore.applyAppearance();
+  bootStep('appearance');
   await setupDeepLinkHandling();
+  bootStep('deeplink');
   logDiagnostic('info', 'app', 'ready');
+  bootStep('ready');
   const readyAt = Date.now();
   window.setInterval(() => {
     if (!document.hidden) {
@@ -165,4 +193,5 @@ async function bootstrap() {
   }, 30_000);
 }
 
+bootStep('module-end');
 void bootstrap();
